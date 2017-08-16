@@ -32,3 +32,4 @@ tools/
 NuGet.Config
 nuget.exe
 pom.xml.bak
+pom.xml.versionsBackup

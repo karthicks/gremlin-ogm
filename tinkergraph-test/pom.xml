@@ -48,13 +48,13 @@ limitations under the License.
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.tinkerpop</groupId>
+      <groupId>org.github.karthicks</groupId>
       <artifactId>gremlin-objects</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.tinkerpop</groupId>
+      <groupId>org.github.karthicks</groupId>
       <artifactId>gremlin-objects</artifactId>
       <version>${project.version}</version>
       <type>test-jar</type>
