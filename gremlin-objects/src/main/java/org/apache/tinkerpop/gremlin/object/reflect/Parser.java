@@ -134,6 +134,13 @@ public final class Parser {
       return org.apache.tinkerpop.gremlin.structure.Element.class;
     }
 
+    /**
+     * The {@link #as} method instantiates an object of the given type from the given element.
+     *
+     * As of now, we assume that the object type has a {@link lombok.NoArgsConstructor}. While it is
+     * possible to reflectively find a constructor that matches the values in the element, this
+     * doesn't do that right now.
+     */
     @SneakyThrows
     @Override
     @SuppressWarnings({"PMD.ShortMethodName"})

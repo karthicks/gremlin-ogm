@@ -213,7 +213,7 @@ Below, we query by an link:./src/main/java/org/apache/tinkerpop/gremlin/object/t
 ----
 Person marko = Person.of("marko");
 Person actual = query
-    .by(g -> g.V().hasLabel(marko.label()).has("name", marko.getName()))
+    .by(g -> g.V().hasLabel(marko.label()).has("name", marko.name()))
     .one(Person.class);
 ----
 
