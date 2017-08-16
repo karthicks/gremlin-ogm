@@ -18,13 +18,14 @@
  */
 package org.apache.tinkerpop.gremlin.object.structure;
 
-import org.apache.tinkerpop.gremlin.object.provider.GraphSystem;
+import org.apache.tinkerpop.gremlin.object.model.Object;
 import org.apache.tinkerpop.gremlin.object.reflect.Primitives;
 import org.apache.tinkerpop.gremlin.object.traversal.AnyTraversal;
 import org.apache.tinkerpop.gremlin.object.traversal.Query;
 import org.apache.tinkerpop.gremlin.object.traversal.SubTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 
+import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -35,7 +36,7 @@ import static org.apache.tinkerpop.gremlin.object.structure.Graph.Should.CREATE;
 
 /**
  * The {@link ObjectGraph} implements the {@link Graph} interface using the provided {@link
- * GraphSystem} and {@link Query} instances.
+ * GraphTraversalSource} and {@link Query} instances.
  *
  * <p>
  * It delegates the {@link #addVertex} and {@link #removeVertex} methods to the {@link VertexGraph}
@@ -47,13 +48,11 @@ import static org.apache.tinkerpop.gremlin.object.structure.Graph.Should.CREATE;
  */
 @Slf4j
 @SuppressWarnings({"unchecked", "rawtypes", "PMD.TooManyStaticImports"})
-public abstract class ObjectGraph implements Graph {
+public class ObjectGraph implements Graph {
 
   @SuppressWarnings({"PMD.AvoidFieldNameMatchingMethodName"})
-  protected final GraphSystem system;
-  @SuppressWarnings({"PMD.AvoidFieldNameMatchingMethodName"})
   protected final Query query;
-  protected GraphTraversalSource g;
+  protected final GraphTraversalSource g;
 
   @SuppressWarnings({"PMD.AvoidFieldNameMatchingMethodName"})
   /**
@@ -82,11 +81,11 @@ public abstract class ObjectGraph implements Graph {
    */
   protected HasFeature.Verifier verifier;
 
-  public ObjectGraph(GraphSystem system, Query query) {
-    this.system = system;
+  @Inject @Object
+  public ObjectGraph(GraphTraversalSource g, Query query) {
+    this.g = g;
     this.query = query;
     should = CREATE;
-    g = system.g();
     verifier = HasFeature.Verifier.of(g);
     vertexGraph = new VertexGraph(this, g);
     edgeGraph = new EdgeGraph(this, query, g);
@@ -227,11 +226,6 @@ public abstract class ObjectGraph implements Graph {
   }
 
   @Override
-  public GraphSystem system() {
-    return system;
-  }
-
-  @Override
   public void drop() {
     query.by(g -> g.V().drop()).none();
   }
@@ -246,9 +240,6 @@ public abstract class ObjectGraph implements Graph {
 
   @Override
   public void close() {
-    if (system != null) {
-      system.close();
-    }
     if (query != null) {
       query.close();
     }

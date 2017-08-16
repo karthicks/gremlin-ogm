@@ -18,7 +18,6 @@
  */
 package org.apache.tinkerpop.gremlin.object.structure;
 
-import org.apache.tinkerpop.gremlin.object.provider.GraphSystem;
 import org.apache.tinkerpop.gremlin.object.traversal.AnyTraversal;
 import org.apache.tinkerpop.gremlin.object.traversal.Query;
 import org.apache.tinkerpop.gremlin.object.traversal.SubTraversal;
@@ -172,12 +171,6 @@ public interface Graph {
    * Return the associated {@link Query} instance.
    */
   Query query();
-
-  /**
-   * Return the associated {@link GraphSystem} instance.
-   */
-  @SuppressWarnings("rawtypes")
-  GraphSystem system();
 
   /**
    * Drop the elements in the graph.

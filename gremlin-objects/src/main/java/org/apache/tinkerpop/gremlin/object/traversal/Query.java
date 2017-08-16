@@ -18,7 +18,6 @@
  */
 package org.apache.tinkerpop.gremlin.object.traversal;
 
-import org.apache.tinkerpop.gremlin.object.provider.GraphSystem;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 
@@ -51,14 +50,6 @@ import static org.apache.tinkerpop.gremlin.object.reflect.Classes.name;
 public interface Query {
 
   /**
-   * Specify a traversal in terms of a scripted string.
-   *
-   * @return this {@link Query}
-   */
-  @SuppressWarnings({"PMD.ShortMethodName"})
-  Query by(String traversal);
-
-  /**
    * Specify a traversal as an {@link AnyTraversal} deemed to be complete.
    *
    * @return this {@link Query}
@@ -73,13 +64,6 @@ public interface Query {
    */
   @SuppressWarnings({"PMD.ShortMethodName"})
   Query by(SubTraversal... subTraversals);
-
-  /**
-   * Bind a value to a name referenced in the scripted traversal used in {@link #by(String)}.
-   *
-   * @return this {@link Query}
-   */
-  Query bind(String name, String value);
 
   /**
    * Define an alias for the object referenced in a {@link GraphTraversal#select} step.
@@ -128,11 +112,6 @@ public interface Query {
    * corresponding types of object.
    */
   Selections select();
-
-  /**
-   * Return the underlying implementation-specific graph system.
-   */
-  GraphSystem system();
 
   /**
    * Release the resources held by the underlying graph system.

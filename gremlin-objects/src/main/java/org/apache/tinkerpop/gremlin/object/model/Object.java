@@ -16,33 +16,30 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.tinkerpop.gremlin.tinkergraph.object;
+package org.apache.tinkerpop.gremlin.object.model;
 
-import org.apache.commons.configuration.Configuration;
-import org.apache.tinkerpop.gremlin.object.provider.GraphSystem;
-import org.apache.tinkerpop.gremlin.object.traversal.ObjectQuery;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import javax.inject.Inject;
+import javax.inject.Qualifier;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.extern.slf4j.Slf4j;
+import static java.lang.annotation.ElementType.CONSTRUCTOR;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE;
 
 /**
- * The {@link TinkerQuery} is the default implementation of the {@link ObjectQuery}, which lets you
- * {@link org.apache.tinkerpop.gremlin.object.traversal.Query} objects created using the {@link
- * org.apache.tinkerpop.gremlin.object.structure.Graph}. If dependency injection is not enabled, use
- * the {@link TinkerFactory}.
+ * An {@link Object} qualifier is used to annotate an injection point, so that it can be satisfied
+ * by an implementation of the provider's choosing.
  *
  * @author Karthick Sankarachary (http://github.com/karthicks)
  */
-@Data
-@Slf4j
-@EqualsAndHashCode(callSuper = true)
-public class TinkerQuery extends ObjectQuery {
 
-  @Inject
-  public TinkerQuery(GraphSystem<Configuration> system) {
-    super(system);
-  }
+@Qualifier
+@Retention(RetentionPolicy.RUNTIME)
+@Target({FIELD, TYPE, METHOD, PARAMETER, CONSTRUCTOR})
+@SuppressWarnings("PMD.TooManyStaticImports")
+public @interface Object {
 }

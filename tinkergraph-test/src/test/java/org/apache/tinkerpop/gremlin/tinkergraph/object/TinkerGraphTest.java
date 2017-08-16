@@ -18,32 +18,30 @@
  */
 package org.apache.tinkerpop.gremlin.tinkergraph.object;
 
-import org.apache.commons.configuration.Configuration;
 import org.apache.tinkerpop.gremlin.object.ObjectGraphTest;
 import org.apache.tinkerpop.gremlin.object.provider.GraphFactory;
 import org.apache.tinkerpop.gremlin.object.structure.Graph;
 import org.apache.tinkerpop.gremlin.object.traversal.Query;
+import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph;
 
 import lombok.extern.slf4j.Slf4j;
 
+import static org.apache.tinkerpop.gremlin.object.provider.GraphFactory.ShouldCache.THREAD_LOCAL;
+
 /**
- * This is a test suite for the {@link TinkerGraph} and {@link TinkerQuery} alike. While all of the
- * testing is defined in {@link ObjectGraphTest}, this class is responsible for providing a
- * tinkergraph-specific version of the {@link Graph} and {@link Query} to it.
+ * This is a test suite for the {@link Graph} and {@link Query} implementations, when it points to a
+ * {@link TinkerGraph} traversal. While all of the testing is defined in {@link ObjectGraphTest},
+ * this class is responsible for providing a tinkergraph-specific version of the {@link Graph} and
+ * {@link Query} to it.
  *
  * @author Karthick Sankarachary (http://github.com/karthicks)
  */
 @Slf4j
 public class TinkerGraphTest extends ObjectGraphTest {
 
-  private static final GraphFactory<Configuration> FACTORY = TinkerFactory.of();
+  private static final GraphFactory FACTORY = GraphFactory.of(TinkerGraph.open().traversal());
 
   public TinkerGraphTest() {
     super(FACTORY.graph(), FACTORY.query());
-  }
-
-  @Override
-  protected boolean supportsScripts() {
-    return false;
   }
 }

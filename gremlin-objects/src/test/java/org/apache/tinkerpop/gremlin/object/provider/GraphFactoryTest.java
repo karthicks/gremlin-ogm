@@ -18,13 +18,9 @@
  */
 package org.apache.tinkerpop.gremlin.object.provider;
 
-import org.apache.tinkerpop.gremlin.object.graphs.TheCrew;
-import org.apache.tinkerpop.gremlin.object.vertices.Person;
-import org.apache.tinkerpop.gremlin.object.vertices.Software;
 import org.apache.tinkerpop.gremlin.object.structure.Graph;
 import org.apache.tinkerpop.gremlin.object.traversal.Query;
-import org.apache.tinkerpop.gremlin.object.traversal.library.Count;
-import org.apache.tinkerpop.gremlin.object.traversal.library.HasLabel;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,13 +34,12 @@ import java.util.concurrent.ForkJoinPool;
 
 import lombok.SneakyThrows;
 
-import static org.apache.tinkerpop.gremlin.object.provider.CachedFactory.ShouldCache.EVERYTHING;
-import static org.apache.tinkerpop.gremlin.object.provider.CachedFactory.ShouldCache.GRAPH_SYSTEM;
-import static org.apache.tinkerpop.gremlin.object.provider.CachedFactory.ShouldCache.NOTHING;
-import static org.apache.tinkerpop.gremlin.object.reflect.Classes.is;
+import static org.apache.tinkerpop.gremlin.object.provider.GraphFactory.ShouldCache.EVERYTHING;
+import static org.apache.tinkerpop.gremlin.object.provider.GraphFactory.ShouldCache.NOTHING;
+import static org.apache.tinkerpop.gremlin.object.provider.GraphFactory.ShouldCache.THREAD_LOCAL;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
 
 /**
  * The {@link GraphFactoryTest} defines sanity tests to ensure that the {@link Graph} and {@link
@@ -54,31 +49,28 @@ import static org.junit.Assert.assertNotNull;
  */
 @RunWith(Parameterized.class)
 @SuppressWarnings("rawtypes")
-public abstract class GraphFactoryTest<C> {
+public class GraphFactoryTest {
 
   @Parameterized.Parameter
-  public CachedFactory.ShouldCache shouldCache;
+  public GraphFactory.ShouldCache shouldCache;
   private Graph graph;
   private Query query;
-  private GraphSystem<C> system;
-  private GraphFactory<C> factory;
+  private GraphTraversalSource g;
+  private GraphFactory factory;
   private ExecutorService executorService;
 
   @Parameterized.Parameters(name = "ShouldCache({0})")
   public static Collection<Object[]> data() {
-    return Arrays.asList(new Object[][] {
-        {EVERYTHING}, {GRAPH_SYSTEM}, {NOTHING}
+    return Arrays.asList(new Object[][]{
+        {EVERYTHING}, {THREAD_LOCAL}, {NOTHING}
     });
   }
 
-  protected abstract GraphFactory<C> factory(CachedFactory.ShouldCache shouldCache);
-
-  protected GraphFactory<C> factory() {
+  protected GraphFactory factory() {
     if (factory == null) {
-      factory = factory(shouldCache);
-      if (is(factory, CachedFactory.class)) {
-        ((CachedFactory) factory).clear();
-      }
+      g = mock(GraphTraversalSource.class);
+      factory = GraphFactory.of(g, shouldCache);
+      factory.clear();
     }
     return factory;
   }
@@ -88,17 +80,13 @@ public abstract class GraphFactoryTest<C> {
     executorService = new ForkJoinPool();
     graph = factory().graph();
     query = factory().query();
-    system = factory().system();
-    graph.drop();
   }
 
   @After
   public void tearDown() {
     factory = null;
-    graph.drop();
     graph.close();
     query.close();
-    system.close();
   }
 
   @Test
@@ -108,51 +96,20 @@ public abstract class GraphFactoryTest<C> {
       case EVERYTHING:
         assertEquals(factory().graph(), graph);
         assertEquals(factory().query(), query);
-        assertEquals(factory().system(), system);
         break;
-      case GRAPH_SYSTEM:
+      case THREAD_LOCAL:
         executorService.submit(() -> {
           assertNotEquals(factory().graph(), graph);
           assertNotEquals(factory().query(), query);
         }).get();
         assertEquals(factory().graph(), graph);
         assertEquals(factory().query(), query);
-        assertEquals(factory().system(), system);
         break;
       case NOTHING:
       default:
         assertNotEquals(factory().graph(), graph);
         assertNotEquals(factory().query(), query);
-        assertNotEquals(factory().system(), system);
         break;
     }
   }
-
-  @Test
-  public void testSystemIsEmpty() {
-    long count = system.g().V().count().next();
-    assertEquals(0l, count);
-  }
-
-  @Test
-  public void testGraphHasObjects() {
-    TheCrew crew = TheCrew.of(graph);
-    assertNotNull(crew.marko);
-    assertNotNull(crew.gremlin);
-
-    long persons = query
-        .by(
-            HasLabel.of(Person.class),
-            Count.of())
-        .one(Long.class);
-    assertEquals(4l, persons);
-
-    long softwares = query
-        .by(
-            HasLabel.of(Software.class),
-            Count.of())
-        .one(Long.class);
-    assertEquals(2l, softwares);
-  }
-
 }

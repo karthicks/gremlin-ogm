@@ -20,7 +20,6 @@ package org.apache.tinkerpop.gremlin.object.traversal;
 
 import org.apache.tinkerpop.gremlin.object.vertices.Person;
 import org.apache.tinkerpop.gremlin.object.model.PrimaryKey;
-import org.apache.tinkerpop.gremlin.object.provider.GraphSystem;
 import org.apache.tinkerpop.gremlin.object.traversal.library.HasKeys;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
@@ -47,7 +46,7 @@ import static org.mockito.Mockito.when;
 
 /**
  * Verify that the {@link ObjectQuery} executes queries and returns objects as expected. The
- * provider of the {@link GraphSystem} is mocked, as are the gremlin {@link Vertex}s.
+ * provider of the {@link GraphTraversalSource} is mocked, as are the gremlin {@link Vertex}s.
  *
  * @author Karthick Sankarachary (http://github.com/karthicks)
  */
@@ -56,8 +55,6 @@ import static org.mockito.Mockito.when;
 @NoArgsConstructor
 @SuppressWarnings({"unchecked", "rawtypes", "serial"})
 public class ObjectQueryTest {
-
-  protected GraphSystem system;
 
   protected ObjectQuery query;
 
@@ -83,25 +80,12 @@ public class ObjectQueryTest {
           }
         });
 
-    system = mock(GraphSystem.class);
     g = mock(GraphTraversalSource.class);
     traversal = mock(GraphTraversal.class);
 
     when(g.V()).thenReturn(traversal);
-    when(system.g()).thenReturn(g);
 
-    query = new ObjectQuery(system) {};
-  }
-
-  @Test
-  public void testQueryByNativeTraversal() {
-    when(system.execute(anyString())).thenReturn((List) Arrays.asList(vertex));
-
-    Person actual = query
-        .by("g.V().has('person', 'name', 'marko')")
-        .one(Person.class);
-
-    assertEquals(marko, actual);
+    query = new ObjectQuery(g);
   }
 
   @Test

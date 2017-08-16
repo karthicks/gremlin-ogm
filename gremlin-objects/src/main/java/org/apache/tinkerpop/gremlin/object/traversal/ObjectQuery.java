@@ -18,7 +18,7 @@
  */
 package org.apache.tinkerpop.gremlin.object.traversal;
 
-import org.apache.tinkerpop.gremlin.object.provider.GraphSystem;
+import org.apache.tinkerpop.gremlin.object.model.Object;
 import org.apache.tinkerpop.gremlin.object.reflect.Parser;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
@@ -32,18 +32,17 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
-import javax.script.Bindings;
-import javax.script.SimpleBindings;
+import javax.inject.Inject;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
 
 /**
  * The {@link ObjectQuery} implements the {@link Query} interface using the provided {@link
- * GraphSystem}.
+ * GraphTraversalSource}.
  *
  * <p>
  * Upon initialization, it gets a handle to the {@link GraphTraversalSource}. As traversal
@@ -57,36 +56,26 @@ import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
  */
 @Slf4j
 @SuppressWarnings({"unchecked", "rawtypes", "PMD.AvoidDuplicateLiterals"})
-public abstract class ObjectQuery implements Query {
+public class ObjectQuery implements Query {
 
   @SuppressWarnings({"PMD.AvoidFieldNameMatchingMethodName"})
-  private final GraphSystem system;
-  private GraphTraversalSource g;
+  private final GraphTraversalSource g;
 
   private AnyTraversal anyTraversal;
   private List<? extends SubTraversal> subTraversals;
-  private String nativeTraversal;
-  private Bindings bindings = new SimpleBindings();
 
   private List<StepType> disabledSteps = new ArrayList<>();
   private Selections selections;
   private Function<GraphTraversalSource, GraphTraversal> traversalFactory = g -> g.V();
 
-  public ObjectQuery(GraphSystem system) {
-    this.system = system;
-    this.g = this.system.g();
+  @Inject @Object
+  public ObjectQuery(GraphTraversalSource g) {
+    this.g = g;
   }
 
   @Override
   public void disable(StepType... disabledSteps) {
     this.disabledSteps = Arrays.asList(disabledSteps);
-  }
-
-  @Override
-  @SuppressWarnings({"PMD.ShortMethodName"})
-  public ObjectQuery by(String nativeTraversal) {
-    this.nativeTraversal = nativeTraversal;
-    return this;
   }
 
   @Override
@@ -100,13 +89,6 @@ public abstract class ObjectQuery implements Query {
   @SuppressWarnings({"PMD.ShortMethodName"})
   public Query by(SubTraversal... subTraversals) {
     this.subTraversals = Arrays.asList(subTraversals);
-    return this;
-  }
-
-  @Override
-  @SuppressWarnings({"PMD.ShortMethodName"})
-  public ObjectQuery bind(String name, String value) {
-    bindings.put(name, value);
     return this;
   }
 
@@ -185,14 +167,10 @@ public abstract class ObjectQuery implements Query {
   }
 
   @Override
-  public GraphSystem system() {
-    return system;
-  }
-
-  @Override
+  @SneakyThrows
   public void close() {
-    if (system != null) {
-      system.close();
+    if (g != null) {
+      g.close();
     }
   }
 
@@ -228,22 +206,12 @@ public abstract class ObjectQuery implements Query {
 
   /**
    * Given a {@link GraphTraversalSource}, generate a {@link Stream} of results, by applying it on
-   * either the {@link #nativeTraversal}, {@link #anyTraversal}, or {@link #subTraversals} provided
-   * by the {@link #by} method.
+   * the {@link #anyTraversal}, or {@link #subTraversals} provided by the {@link #by} method.
    */
   @SuppressWarnings("unchecked")
   private Stream<?> resultSet(GraphTraversalSource g) {
     Stream<?> resultStream;
-    if (nativeTraversal != null) {
-      if (hasDisabledSteps(nativeTraversal)) {
-        throw Query.Exceptions.disabledStepQueried(disabledSteps);
-      }
-      Iterable<?> iterable =
-          !bindings.isEmpty() ? system.execute(nativeTraversal, bindings)
-              : system.execute(nativeTraversal);
-      resultStream = StreamSupport.stream(iterable.spliterator(), false);
-      log.info("Executing native graph traversal: {}", nativeTraversal);
-    } else if (anyTraversal != null) {
+    if (anyTraversal != null) {
       GraphTraversal traversal = anyTraversal.apply(g);
       if (hasDisabledSteps(traversal)) {
         throw Query.Exceptions.disabledStepQueried(disabledSteps);
@@ -283,7 +251,6 @@ public abstract class ObjectQuery implements Query {
 
   private void resetState() {
     this.source(Source.V);
-    this.nativeTraversal = null;
     this.subTraversals = null;
     this.anyTraversal = null;
     this.selections = null;

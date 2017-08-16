@@ -86,17 +86,11 @@ public abstract class ObjectGraphTest extends GraphTest {
     this.query = query;
   }
 
-  protected abstract boolean supportsScripts();
-
   @Test
   public void testGetFirstNames() {
-    if (!supportsScripts()) {
-      return;
-    }
     Modern modern = Modern.of(graph);
     List<String> names = query
-        .by("g.V().values(property)")
-        .bind("property", "name")
+        .by(g -> g.V().values("name"))
         .list(String.class);
     assertNotNull(names);
     assertTrue(names.contains(modern.vadas.name()));
