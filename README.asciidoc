@@ -14,8 +14,8 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 ////
-An Object Graph Mapping Library For Gremlin
----------------------------------------------
+== An Object Graph Mapping Library For Gremlin
+
 Karthick Sankarachary <http://github.com/karthicks>
 [.lead]
 The `gremlin-objects` link:pom.xml[module] defines a library that puts an object-oriented spin on the gremlin property graph.
@@ -289,7 +289,7 @@ Here, we list a few directions in which we see the library evolving:
 
 ==== Language Variants
 The concept of lifting the property graph into objects is language-independent.
-To quote the TinkerPop docs, "with JSR-223, any language compiler written for the JVM can directly access the JVM and any of its libraries", and that would include `gremlin-objects.
+To quote the TinkerPop docs, "with JSR-223, any language compiler written for the JVM can directly access the JVM and any of its libraries", and that would include `gremlin-objects`.
 For GLVs not written for the JVM, it can be ported over as long as it supports basic reflection.
 Case in point, the Gremlin-Python variant could achieve the object mapping through the https://docs.python.org/2/library/functions.html#dir[dir], https://docs.python.org/2/library/functions.html#getattr[getattr]  and https://docs.python.org/2/library/functions.html#setattr[setattr] built-in functions.
 
