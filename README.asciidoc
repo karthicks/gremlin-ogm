@@ -57,7 +57,7 @@ In this section, we go over how gremlin elements may be modeled, and how those m
 
 ==== Object Model
 
-Let's consider the example of the `person` vertex, taken from the "modern" and "the crew" graphs defined in the link:../tinkergraph-gremlin/src/main/java/org/apache/tinkerpop/gremlin/tinkergraph/structure/TinkerFactory.java[TinkerFactory].
+Let's consider the example of the `person` vertex, taken from the "modern" and "the crew" graphs defined in the link:https://github.com/apache/tinkerpop/tree/master/gremlin-core/tinkergraph-gremlin/src/main/java/org/apache/tinkerpop/gremlin/tinkergraph/structure/TinkerFactory.java[TinkerFactory].
 In our object world, it would be defined as a link:./src/test/java/org/apache/tinkerpop/gremlin/object/vertices/Person.java[Person] class that extends link:./src/main/java/org/apache/tinkerpop/gremlin/object/structure/Vertex.java[Vertex].
 By default, the vertex's label matches its simple class name, hence we have to un-capitalize it using the link:./src/main/java/org/apache/tinkerpop/gremlin/object/model/Alias.java[@Alias] annotation.
 
@@ -269,7 +269,7 @@ We give such providers a way to tell us how to parse such custom elements using 
 While there exist similar OGM libraries, this one has some key differentiating factors. Now, let's consider the alternatives:
 
 ==== GremlinDsl Traversals
-The `gremlin-core` module defines a link:../gremlin-core/src/main/java/org/apache/tinkerpop/gremlin/process/traversal/dsl/GremlinDsl.java[GremlinDsl] annotation that lets you define custom traversals by extending the `GraphTraversal` and `GraphTraversalSource`.
+The `gremlin-core` module defines a link:https://github.com/apache/tinkerpop/tree/master/gremlin-core/src/main/java/org/apache/tinkerpop/gremlin/process/traversal/dsl/GremlinDsl.java[GremlinDsl] annotation that lets you define custom traversals by extending the `GraphTraversal` and `GraphTraversalSource`.
 However, it requires some familiarity of `gremlin-core` internals.
 
 ==== Peopod for Tinkerpop 3
@@ -296,7 +296,7 @@ Case in point, the Gremlin-Python variant could achieve the object mapping throu
 ==== Provider Support
 In reality, it is fairly easy for a provider to plug-into `gremlin-objects` simply by supplying a `GraphTraversalSource` of their choosing.
 The ability to register custom primitive types and traversal result parsers allows for further customization.
-Since `neo4j` already has it's own link:../neo4j-gremlin/src/main/java/org/apache/tinkerpop/gremlin/neo4j/structure/Neo4jGraph.java[Neo4jGraph], it's a good candidate to become the next test case.
+Since `neo4j` already has it's own link:https://github.com/apache/tinkerpop/tree/master/neo4j-gremlin/src/main/java/org/apache/tinkerpop/gremlin/neo4j/structure/Neo4jGraph.java[Neo4jGraph], it's a good candidate to become the next test case.
 
 ==== DataFrame Support
 Some providers use http://graphframes.github.io/[GraphFrames] to execute bulk operations and graph algorithms on top of Tinkerpop.
