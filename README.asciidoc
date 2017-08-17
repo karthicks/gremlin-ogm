@@ -36,7 +36,7 @@ To get the library that facilitates all of this, add this dependency to your `po
 <dependency>
   <groupId>com.github.karthicks</groupId>
   <artifactId>gremlin-objects</artifactId>
-  <version>3.3.0-SNAPSHOT</version>
+  <version>3.2.5-SNAPSHOT</version>
 </dependency>
 ----
 
@@ -47,7 +47,7 @@ A reference use case of this library is available in the following `tinkergraph-
 <dependency>
   <groupId>com.github.karthicks</groupId>
   <artifactId>tinkergraph-test</artifactId>
-  <version>3.3.0-SNAPSHOT</version>
+  <version>3.2.5-SNAPSHOT</version>
 </dependency>
 ----
 

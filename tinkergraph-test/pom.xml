@@ -20,7 +20,7 @@ limitations under the License.
   <parent>
     <groupId>com.github.karthicks</groupId>
     <artifactId>gremlin-ogm</artifactId>
-    <version>3.3.0-SNAPSHOT</version>
+    <version>3.2.5-SNAPSHOT</version>
   </parent>
   <artifactId>tinkergraph-test</artifactId>
   <name>Gremlin OGM :: TinkerGraph Test</name>
@@ -44,7 +44,7 @@ limitations under the License.
     <dependency>
       <groupId>org.apache.tinkerpop</groupId>
       <artifactId>gremlin-core</artifactId>
-      <version>${project.version}</version>
+      <version>${tinkerpop.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -63,7 +63,7 @@ limitations under the License.
     <dependency>
       <groupId>org.apache.tinkerpop</groupId>
       <artifactId>tinkergraph-gremlin</artifactId>
-      <version>${project.version}</version>
+      <version>${tinkerpop.version}</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
