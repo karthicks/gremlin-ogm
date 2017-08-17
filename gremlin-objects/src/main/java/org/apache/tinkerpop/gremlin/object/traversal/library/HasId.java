@@ -25,6 +25,7 @@ import org.apache.tinkerpop.gremlin.structure.Element;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.Accessors;
 
 /**
  * {@link HasId} finds an adjacent graph element with the specific id of the supplied element.
@@ -32,6 +33,7 @@ import lombok.RequiredArgsConstructor;
  * @author Karthick Sankarachary (http://github.com/karthicks)
  */
 @Data
+@Accessors(fluent = true, chain = true)
 @RequiredArgsConstructor(staticName = "of")
 public class HasId implements ElementTo.Element {
 

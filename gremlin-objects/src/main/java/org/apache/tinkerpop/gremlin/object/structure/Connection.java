@@ -23,6 +23,7 @@ import java.util.List;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.Accessors;
 
 /**
  * {@link Connection} specifies the type of vertices that an edge goes out from and in to.
@@ -33,6 +34,7 @@ import lombok.RequiredArgsConstructor;
  * @author Karthick Sankarachary (http://github.com/karthicks)
  */
 @Data
+@Accessors(fluent = true, chain = true)
 @RequiredArgsConstructor(staticName = "of")
 public class Connection {
 

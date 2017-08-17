@@ -42,7 +42,7 @@ public class HasKeysTest extends TraversalTest<Element> {
 
     verify(traversal, times(1)).hasLabel("City");
     verify(traversal, times(1)).has("name", "San Francisco");
-    assertEquals(sanFrancisco, hasKeys.getElement());
+    assertEquals(sanFrancisco, hasKeys.element());
   }
 
   @Test(expected = IllegalArgumentException.class)

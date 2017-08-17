@@ -42,7 +42,7 @@ public class AddVTest extends TraversalTest<Element> {
 
     verify(g, times(1)).addV(sanFrancisco.label());
     verify(traversal, times(1)).property("name", "San Francisco");
-    assertEquals(sanFrancisco, addV.getElement());
+    assertEquals(sanFrancisco, addV.element());
   }
 
   @Test(expected = IllegalArgumentException.class)

@@ -40,9 +40,9 @@ public class HasTest extends TraversalTest<Element> {
     traverse(has);
 
     verify(traversal, times(1)).has("label", "key", "value");
-    assertEquals("label", has.getLabel());
-    assertEquals("key", has.getKey());
-    assertEquals("value", has.getValue());
+    assertEquals("label", has.label());
+    assertEquals("key", has.key());
+    assertEquals("value", has.value());
   }
 
 }

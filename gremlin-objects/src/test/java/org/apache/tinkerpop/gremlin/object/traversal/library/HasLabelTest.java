@@ -41,7 +41,7 @@ public class HasLabelTest extends TraversalTest<Element> {
     traverse(hasLabel);
 
     verify(traversal, times(1)).hasLabel("City");
-    assertEquals(Label.of(sanFrancisco), hasLabel.getLabel());
+    assertEquals(Label.of(sanFrancisco), hasLabel.label());
   }
 
 }

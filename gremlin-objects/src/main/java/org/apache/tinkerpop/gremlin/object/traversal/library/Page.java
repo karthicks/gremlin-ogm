@@ -25,6 +25,7 @@ import org.apache.tinkerpop.gremlin.structure.Element;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.experimental.Accessors;
 
 /**
  * {@link Page} finds a page of elements of a given type.
@@ -32,6 +33,7 @@ import lombok.SneakyThrows;
  * @author Karthick Sankarachary (http://github.com/karthicks)
  */
 @Data
+@Accessors(fluent = true, chain = true)
 @RequiredArgsConstructor(staticName = "of")
 public class Page implements ElementTo.Element {
 

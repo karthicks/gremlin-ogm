@@ -50,7 +50,7 @@ public class HasIdTest extends TraversalTest<Element> {
         put("name", "San Francisco");
       }
     });
-    assertEquals(sanFrancisco, hasId.getElement());
+    assertEquals(sanFrancisco, hasId.element());
   }
 
 }

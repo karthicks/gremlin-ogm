@@ -19,6 +19,7 @@
 package org.apache.tinkerpop.gremlin.object.structure;
 
 import org.apache.tinkerpop.gremlin.object.model.Hidden;
+import org.apache.tinkerpop.gremlin.object.reflect.Parser;
 import org.apache.tinkerpop.gremlin.object.traversal.AnyTraversal;
 import org.apache.tinkerpop.gremlin.object.traversal.SubTraversal;
 import org.apache.tinkerpop.gremlin.structure.Direction;
@@ -30,6 +31,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 
 /**
  * An {@link Edge} is an {@link Element} that is an object-oriented manifestation of an underlying
@@ -47,8 +49,8 @@ import lombok.ToString;
 @Data
 @ToString
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true,
-    exclude = {"from", "to", "fromId", "toId", "cachedConnections"})
+@Accessors(fluent = true, chain = true)
+@EqualsAndHashCode(callSuper = true, of = {})
 public abstract class Edge extends Element {
 
   /**
@@ -77,6 +79,20 @@ public abstract class Edge extends Element {
   private List<Connection> cachedConnections;
 
   protected abstract List<Connection> connections();
+
+  /**
+   * Return the "from" vertex as the given type.
+   */
+  public <V extends Vertex> V fromAs(Class<V> vertexType) {
+    return Parser.as(from.delegate(), vertexType);
+  }
+
+  /**
+   * Return the "to" vertex as the given type.
+   */
+  public <V extends Vertex> V toAs(Class<V> vertexType) {
+    return Parser.as(to.delegate(), vertexType);
+  }
 
   /**
    * Does the edge have a connection between the given vertices?

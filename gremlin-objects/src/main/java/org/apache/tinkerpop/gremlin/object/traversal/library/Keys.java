@@ -24,6 +24,7 @@ import org.apache.tinkerpop.gremlin.structure.Element;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.Accessors;
 
 import static org.apache.tinkerpop.gremlin.object.reflect.Keys.primaryKeyNames;
 
@@ -33,6 +34,7 @@ import static org.apache.tinkerpop.gremlin.object.reflect.Keys.primaryKeyNames;
  * @author Karthick Sankarachary (http://github.com/karthicks)
  */
 @Data
+@Accessors(fluent = true, chain = true)
 @RequiredArgsConstructor(staticName = "of")
 public class Keys implements ElementTo.Any {
 

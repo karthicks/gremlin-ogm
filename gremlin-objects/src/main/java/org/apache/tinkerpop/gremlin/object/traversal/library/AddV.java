@@ -30,6 +30,7 @@ import java.lang.reflect.Field;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.experimental.Accessors;
 
 import static org.apache.tinkerpop.gremlin.object.reflect.Fields.propertyKey;
 import static org.apache.tinkerpop.gremlin.object.reflect.Fields.propertyValue;
@@ -52,6 +53,7 @@ import static org.apache.tinkerpop.gremlin.object.structure.HasFeature.supportsU
  * @author Karthick Sankarachary (http://github.com/karthicks)
  */
 @Data
+@Accessors(fluent = true, chain = true)
 @RequiredArgsConstructor(staticName = "of")
 @SuppressWarnings({"unchecked", "rawtypes", "PMD.TooManyStaticImports"})
 public class AddV implements AnyTraversal {

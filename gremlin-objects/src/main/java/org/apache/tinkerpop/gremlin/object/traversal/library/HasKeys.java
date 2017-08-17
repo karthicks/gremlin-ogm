@@ -33,6 +33,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.experimental.Accessors;
 
 import static org.apache.tinkerpop.gremlin.object.reflect.Classes.is;
 import static org.apache.tinkerpop.gremlin.object.reflect.Fields.propertyKey;
@@ -51,6 +52,7 @@ import static org.apache.tinkerpop.gremlin.object.reflect.Primitives.isMissing;
 @Data
 @Builder
 @AllArgsConstructor
+@Accessors(fluent = true, chain = true)
 @RequiredArgsConstructor(staticName = "of")
 @SuppressWarnings("PMD.TooManyStaticImports")
 public class HasKeys implements ElementTo.Element {

@@ -24,6 +24,7 @@ import org.apache.tinkerpop.gremlin.structure.Element;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.Accessors;
 
 /**
  * {@link Count} applies the {@link GraphTraversal#count} step on the current traversal.
@@ -31,6 +32,7 @@ import lombok.RequiredArgsConstructor;
  * @author Karthick Sankarachary (http://github.com/karthicks)
  */
 @Data
+@Accessors(fluent = true, chain = true)
 @RequiredArgsConstructor(staticName = "of")
 public class Count implements ElementTo.Long {
 

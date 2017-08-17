@@ -44,7 +44,7 @@ public class ValuesTest extends TraversalTest<Object> {
 
     verify(traversal, times(1)).values("name", "population");
     verify(traversal, times(1)).dedup();
-    assertArrayEquals(new String[] {"name", "population"}, values.getPropertyKeys());
+    assertArrayEquals(new String[] {"name", "population"}, values.propertyKeys());
   }
 
 }

@@ -24,6 +24,7 @@ import org.apache.tinkerpop.gremlin.structure.Element;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.Accessors;
 
 /**
  * {@link Has} constrains the current traversal by a specific element property.
@@ -31,6 +32,7 @@ import lombok.RequiredArgsConstructor;
  * @author Karthick Sankarachary (http://github.com/karthicks)
  */
 @Data
+@Accessors(fluent = true, chain = true)
 @RequiredArgsConstructor(staticName = "of")
 @SuppressWarnings("PMD.ShortClassName")
 public class Has implements ElementTo.Element {

@@ -337,6 +337,8 @@ public abstract class ObjectGraphTest extends GraphTest {
           .by(modern.marko.s("name"), Knows.KnowsWho, modern.vadas.s("name"), Count.of())
           .one(Long.class);
 
+      assertEquals(modern.marko, knows.fromAs(Person.class));
+      assertEquals(modern.vadas, knows.toAs(Person.class));
       switch (should) {
         case MERGE:
           assertEquals(Knows.of(0.5d, now), knows);

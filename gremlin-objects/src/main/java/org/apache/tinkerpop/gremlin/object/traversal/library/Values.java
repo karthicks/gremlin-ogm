@@ -26,6 +26,7 @@ import org.apache.tinkerpop.gremlin.structure.Element;
 import java.util.List;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * {@link Values} extracts the values of the given property keys, and removes duplicates thereof.
@@ -33,6 +34,7 @@ import lombok.Data;
  * @author Karthick Sankarachary (http://github.com/karthicks)
  */
 @Data
+@Accessors(fluent = true, chain = true)
 public class Values implements ElementTo.Any {
 
   private final String[] propertyKeys;

@@ -24,6 +24,7 @@ import org.apache.tinkerpop.gremlin.structure.Element;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.Accessors;
 
 /**
  * {@link HasLabel} finds adjacent graph elements whose label matches that of the given element.
@@ -31,6 +32,7 @@ import lombok.RequiredArgsConstructor;
  * @author Karthick Sankarachary (http://github.com/karthicks)
  */
 @Data
+@Accessors(fluent = true, chain = true)
 @RequiredArgsConstructor(staticName = "of")
 public class HasLabel implements ElementTo.Element {
 

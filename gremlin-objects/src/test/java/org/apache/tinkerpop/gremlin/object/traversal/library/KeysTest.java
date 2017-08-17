@@ -43,7 +43,7 @@ public class KeysTest extends TraversalTest<Object> {
 
     verify(traversal, times(1)).values("name");
     verify(traversal, times(1)).dedup();
-    assertEquals(City.class, keys.getElementType());
+    assertEquals(City.class, keys.elementType());
   }
 
 }

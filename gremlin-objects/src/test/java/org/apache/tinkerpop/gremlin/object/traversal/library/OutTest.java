@@ -40,7 +40,7 @@ public class OutTest extends TraversalTest<Element> {
     traverse(out);
 
     verify(traversal, times(1)).out("City");
-    assertEquals(sanFrancisco.label(), out.getLabel());
+    assertEquals(sanFrancisco.label(), out.label());
   }
 
 }

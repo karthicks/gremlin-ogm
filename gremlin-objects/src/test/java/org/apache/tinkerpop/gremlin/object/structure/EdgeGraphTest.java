@@ -177,8 +177,8 @@ public class EdgeGraphTest extends ElementGraphTest<Develops> {
   @Test
   public void testRemoveEdge() {
     Develops develops = createElement();
-    develops.setFromId(marko.id());
-    develops.setToId(vadas.id());
+    develops.fromId(marko.id());
+    develops.toId(vadas.id());
 
     edgeGraph.removeEdge(develops);
 

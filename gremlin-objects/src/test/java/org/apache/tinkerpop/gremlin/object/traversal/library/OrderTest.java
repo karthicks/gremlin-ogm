@@ -43,7 +43,7 @@ public class OrderTest extends TraversalTest<Element> {
 
     verify(traversal, times(1)).order();
     verify(traversal, times(1)).by("population");
-    assertEquals("population", order.getProperty());
+    assertEquals("population", order.property());
   }
 
 }

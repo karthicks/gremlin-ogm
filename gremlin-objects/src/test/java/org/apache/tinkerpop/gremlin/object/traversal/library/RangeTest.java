@@ -40,8 +40,8 @@ public class RangeTest extends TraversalTest<Element> {
     traverse(range);
 
     verify(traversal, times(1)).range(10, 20);
-    assertEquals(10, range.getLow());
-    assertEquals(20, range.getHigh());
+    assertEquals(10, range.low());
+    assertEquals(20, range.high());
   }
 
 }

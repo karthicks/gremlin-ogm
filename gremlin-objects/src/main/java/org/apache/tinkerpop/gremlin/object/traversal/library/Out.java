@@ -25,6 +25,7 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.Accessors;
 
 /**
  * {@link Out} selects outgoing adjacent vertices that can be reached through the given edge label.
@@ -32,6 +33,7 @@ import lombok.RequiredArgsConstructor;
  * @author Karthick Sankarachary (http://github.com/karthicks)
  */
 @Data
+@Accessors(fluent = true, chain = true)
 @RequiredArgsConstructor(staticName = "of")
 @SuppressWarnings({"PMD.ShortClassName"})
 public class Out implements SubTraversal<Element, Vertex> {

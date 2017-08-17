@@ -55,6 +55,7 @@ public interface SubTraversal<I, O>
    */
   @Override
   @SneakyThrows
+  @SuppressWarnings("unchecked")
   default void formatTo(Formatter formatter, int flags, int width, int precision) {
     DefaultGraphTraversal defaultGraphTraversal = new DefaultGraphTraversal();
     apply(defaultGraphTraversal);

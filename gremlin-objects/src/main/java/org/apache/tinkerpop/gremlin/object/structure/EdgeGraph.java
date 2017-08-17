@@ -73,7 +73,7 @@ public class EdgeGraph extends ElementGraph {
       throw Edge.Exceptions.missingEdgeVertex(Direction.IN, edge, anyTraversal);
     }
     tos.forEach(to -> {
-      edge.setTo(to);
+      edge.to(to);
       addEdge(edge, from, to.delegate());
     });
     return edge;
@@ -93,7 +93,7 @@ public class EdgeGraph extends ElementGraph {
       throw Edge.Exceptions.missingEdgeVertex(Direction.IN, edge, subTraversals);
     }
     tos.forEach(to -> {
-      edge.setTo(to);
+      edge.to(to);
       addEdge(edge, from, to.delegate());
     });
     return edge;
@@ -141,14 +141,14 @@ public class EdgeGraph extends ElementGraph {
         break;
     }
     edge.setDelegate(delegate);
-    edge.setFromId(fromId);
-    edge.setToId(toId);
+    edge.fromId(fromId);
+    edge.toId(toId);
     delegates.put(edge.id(), (org.apache.tinkerpop.gremlin.structure.Edge) delegate);
     this.edge = Parser.as(delegate, edge.getClass());
-    this.edge.setFrom(edge.getFrom());
-    this.edge.setTo(edge.getTo());
-    this.edge.setFromId(edge.getFromId());
-    this.edge.setToId(edge.getToId());
+    this.edge.from(edge.from());
+    this.edge.to(edge.to());
+    this.edge.fromId(edge.fromId());
+    this.edge.toId(edge.toId());
     observers.notifyAll(observer -> observer.edgeAdded(edge, this.edge));
     return this.edge;
   }
@@ -157,10 +157,10 @@ public class EdgeGraph extends ElementGraph {
    * Remove the given edge.
    */
   public <E extends Edge> Edge removeEdge(E edge) {
-    if (edge.getFromId() == null || edge.getToId() == null) {
+    if (edge.fromId() == null || edge.toId() == null) {
       throw Element.Exceptions.removingDetachedElement(edge);
     }
-    GraphTraversal traversal = find(edge, edge.getFromId(), edge.getToId());
+    GraphTraversal traversal = find(edge, edge.fromId(), edge.toId());
     log.info("Executing 'remove edge' traversal {}", traversal);
     traversal.select("edge").drop().toList();
     if (edge.id() != null) {

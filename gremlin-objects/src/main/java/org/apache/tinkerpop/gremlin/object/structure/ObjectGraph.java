@@ -138,8 +138,8 @@ public class ObjectGraph implements Graph {
     if (!edge.connects(fromVertex, toVertex)) {
       throw Edge.Exceptions.invalidEdgeConnection(edge);
     }
-    edge.setFrom(fromVertex);
-    edge.setTo(toVertex);
+    edge.from(fromVertex);
+    edge.to(toVertex);
     this.object = edgeGraph.addEdge(
         edge, vertexGraph.delegate(fromVertex), vertexGraph.delegate(toVertex));
     return this;
@@ -148,7 +148,7 @@ public class ObjectGraph implements Graph {
   @Override
   public <E extends Edge, V extends Vertex> Graph addEdge(E edge, Vertex fromVertex,
       AnyTraversal toAnyTraversal) {
-    edge.setFrom(fromVertex);
+    edge.from(fromVertex);
     this.object = edgeGraph.addEdge(edge, vertexGraph.delegate(fromVertex), toAnyTraversal);
     return this;
   }
@@ -161,7 +161,7 @@ public class ObjectGraph implements Graph {
   @Override
   public <E extends Edge> Graph addEdge(E edge, SubTraversal... subTraversals) {
     Vertex fromVertex = vertexGraph.getVertex();
-    edge.setFrom(fromVertex);
+    edge.from(fromVertex);
     this.object = edgeGraph.addEdge(edge, vertexGraph.delegate(fromVertex), subTraversals);
     return this;
   }
