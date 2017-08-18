@@ -37,7 +37,7 @@ limitations under the License.
     <dependency>
       <groupId>org.apache.tinkerpop</groupId>
       <artifactId>gremlin-core</artifactId>
-      <version>${project.version}</version>
+      <version>${tinkerpop.version}</version>
     </dependency>
     <dependency>
       <groupId>org.hamcrest</groupId>
