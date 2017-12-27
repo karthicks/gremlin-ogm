@@ -18,21 +18,19 @@
  */
 package org.apache.tinkerpop.gremlin.object.structure;
 
+import static org.apache.tinkerpop.gremlin.object.structure.Graph.Should.CREATE;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Consumer;
+import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.tinkerpop.gremlin.object.model.Object;
 import org.apache.tinkerpop.gremlin.object.reflect.Primitives;
 import org.apache.tinkerpop.gremlin.object.traversal.AnyTraversal;
 import org.apache.tinkerpop.gremlin.object.traversal.Query;
 import org.apache.tinkerpop.gremlin.object.traversal.SubTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
-
-import javax.inject.Inject;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Consumer;
-
-import lombok.extern.slf4j.Slf4j;
-
-import static org.apache.tinkerpop.gremlin.object.structure.Graph.Should.CREATE;
 
 /**
  * The {@link ObjectGraph} implements the {@link Graph} interface using the provided {@link
@@ -150,6 +148,14 @@ public class ObjectGraph implements Graph {
       AnyTraversal toAnyTraversal) {
     edge.from(fromVertex);
     this.object = edgeGraph.addEdge(edge, vertexGraph.delegate(fromVertex), toAnyTraversal);
+    return this;
+  }
+
+  @Override
+  public <E extends Edge, V extends Vertex> Graph addEdge(E edge, Vertex fromVertex,
+      SubTraversal... toVertexQueries) {
+    edge.from(fromVertex);
+    this.object = edgeGraph.addEdge(edge, vertexGraph.delegate(fromVertex), toVertexQueries);
     return this;
   }
 
