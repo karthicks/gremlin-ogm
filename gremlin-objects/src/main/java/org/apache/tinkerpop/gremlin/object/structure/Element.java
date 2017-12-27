@@ -162,7 +162,10 @@ public class Element implements Comparable<Element> {
       return false;
     }
     Element that = (Element) other;
-    if (this.id() != null && that.id() != null && !this.id().equals(that.id())) {
+    if (this.id() != null &&
+        that.id() != null &&
+        this.id().getClass().equals(that.id().getClass()) &&
+        !this.id().equals(that.id())) {
       return false;
     }
     return compareTo(that) == 0;
