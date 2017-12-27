@@ -216,8 +216,13 @@ public class ObjectQuery implements Query {
       if (hasDisabledSteps(traversal)) {
         throw Query.Exceptions.disabledStepQueried(disabledSteps);
       }
-      log.info("Executing any graph traversal: {}", traversal);
+      long startTime = Clock.systemUTC().millis();
       resultStream = traversal.toBulkSet().stream();
+      long endTime = Clock.systemUTC().millis();
+      if (log.isDebugEnabled()) {
+        log.debug("Executed chain of graph sub-traversals: {} in {}ms", show(traversal),
+            endTime - startTime);
+      }
     } else if (subTraversals != null) {
       GraphTraversal<Vertex, Vertex> traversal = traversalFactory.apply(g);
       for (SubTraversal subTraversal : subTraversals) {
@@ -226,8 +231,13 @@ public class ObjectQuery implements Query {
       if (hasDisabledSteps(traversal)) {
         throw Query.Exceptions.disabledStepQueried(disabledSteps);
       }
-      log.info("Executing chain of graph sub-traversals: {}", traversal);
+      long startTime = Clock.systemUTC().millis();
       resultStream = traversal.toBulkSet().stream();
+      long endTime = Clock.systemUTC().millis();
+      if (log.isDebugEnabled()) {
+        log.debug("Executed chain of graph sub-traversals: {} in {}ms", show(traversal),
+            endTime - startTime);
+      }
     } else {
       throw Query.Exceptions.noTraversalSpecified(this);
     }

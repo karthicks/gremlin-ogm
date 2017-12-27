@@ -163,8 +163,16 @@ public class VertexGraph extends ElementGraph {
 
   @Override
   protected org.apache.tinkerpop.gremlin.structure.Vertex complete(GraphTraversal traversal) {
-    log.info("Executing '{} vertex' traversal {} ", should().label(), traversal);
-    return (org.apache.tinkerpop.gremlin.structure.Vertex) super.complete(traversal);
+    long startTime = Clock.systemUTC().millis();
+    try {
+      return (org.apache.tinkerpop.gremlin.structure.Vertex) super.complete(traversal);
+    } finally {
+      if (log.isDebugEnabled()) {
+        long endTime = Clock.systemUTC().millis();
+        log.debug("Executing '{} vertex' traversal {} in {}ms", should().label(), show(traversal),
+            endTime - startTime);
+      }
+    }
   }
 
   public void reset() {
