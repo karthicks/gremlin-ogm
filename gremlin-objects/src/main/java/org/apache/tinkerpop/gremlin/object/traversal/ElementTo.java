@@ -81,4 +81,14 @@ public interface ElementTo<O> extends SubTraversal<Element, O> {
       java.lang.Object> {
 
   }
+
+  /**
+   * A function denoting a {@code GraphTraversal} that starts at elements, and ends in maps.
+   */
+  @FunctionalInterface
+  @SuppressWarnings("PMD.ShortClassName")
+  interface Map extends SubTraversal<
+      org.apache.tinkerpop.gremlin.structure.Element,
+      java.util.Map<java.lang.String, java.lang.Object>> {
+  }
 }
