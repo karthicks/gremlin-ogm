@@ -18,27 +18,27 @@
  */
 package org.apache.tinkerpop.gremlin.object.traversal;
 
+import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
+import static org.apache.tinkerpop.gremlin.object.reflect.Traversal.show;
+
+import java.time.Clock;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.inject.Inject;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.tinkerpop.gremlin.object.model.Object;
 import org.apache.tinkerpop.gremlin.object.reflect.Parser;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Column;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import javax.inject.Inject;
-
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
-
-import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
 
 /**
  * The {@link ObjectQuery} implements the {@link Query} interface using the provided {@link
@@ -99,7 +99,9 @@ public class ObjectQuery implements Query {
   public <T> T one(Class<T> type) {
     try {
       List<T> resultSet = resultSet(g, type);
-      if (resultSet == null || resultSet.size() != 1) {
+      if (resultSet == null || resultSet.isEmpty()) {
+        throw Query.Exceptions.unexpectedMultipleResults(this);
+      } else if (resultSet.size() > 1) {
         throw Query.Exceptions.unexpectedMultipleResults(this);
       }
       return resultSet.get(0);
@@ -108,7 +110,16 @@ public class ObjectQuery implements Query {
     }
   }
 
-  /**
+  @Override
+  public <T> Optional<T> optional(Class<T> type) {
+    try {
+      return Optional.of(one(type));
+    } catch (Exception e) {
+      return Optional.empty();
+    }
+  }
+
+    /**
    * Return the list of elements of the given type, using {@link #resultSet}.
    */
   @Override
@@ -255,7 +266,7 @@ public class ObjectQuery implements Query {
    * For each disabled step, check if it appears in the given statement.
    */
   private boolean hasDisabledSteps(final String statement) {
-    return disabledSteps.stream().anyMatch(
+    return !disabledSteps.isEmpty() && disabledSteps.stream().anyMatch(
         disabledStep -> containsIgnoreCase(statement, disabledStep.name()));
   }
 
