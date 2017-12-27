@@ -18,22 +18,6 @@
  */
 package org.apache.tinkerpop.gremlin.object.reflect;
 
-import org.apache.tinkerpop.gremlin.object.model.PropertyValue;
-import org.apache.tinkerpop.gremlin.object.structure.Element;
-import org.apache.tinkerpop.gremlin.object.traversal.Query;
-import org.apache.tinkerpop.gremlin.structure.Property;
-import org.apache.tinkerpop.gremlin.structure.VertexProperty;
-import org.apache.tinkerpop.gremlin.structure.util.detached.DetachedProperty;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import lombok.SneakyThrows;
-
 import static org.apache.tinkerpop.gremlin.object.reflect.Classes.is;
 import static org.apache.tinkerpop.gremlin.object.reflect.Classes.isCollection;
 import static org.apache.tinkerpop.gremlin.object.reflect.Classes.newCollection;
@@ -43,6 +27,21 @@ import static org.apache.tinkerpop.gremlin.object.reflect.Fields.has;
 import static org.apache.tinkerpop.gremlin.object.reflect.Fields.listType;
 import static org.apache.tinkerpop.gremlin.object.reflect.Fields.propertyKey;
 import static org.apache.tinkerpop.gremlin.object.reflect.Primitives.isPrimitive;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import lombok.SneakyThrows;
+import org.apache.tinkerpop.gremlin.object.model.PropertyValue;
+import org.apache.tinkerpop.gremlin.object.structure.Element;
+import org.apache.tinkerpop.gremlin.object.traversal.Query;
+import org.apache.tinkerpop.gremlin.structure.Edge;
+import org.apache.tinkerpop.gremlin.structure.Property;
+import org.apache.tinkerpop.gremlin.structure.VertexProperty;
+import org.apache.tinkerpop.gremlin.structure.util.detached.DetachedProperty;
 
 /**
  * The {@link Parser}'s job is to take an element returned by a traversal and convert it into its
@@ -149,6 +148,13 @@ public final class Parser {
       Object elementId = element.id();
       instance.setUserSuppliedId(elementId);
       instance.setDelegate(element);
+      if (element instanceof Edge &&
+          instance instanceof org.apache.tinkerpop.gremlin.object.structure.Edge) {
+        org.apache.tinkerpop.gremlin.object.structure.Edge edge =
+            (org.apache.tinkerpop.gremlin.object.structure.Edge) instance;
+        edge.fromId(((Edge) element).outVertex().id());
+        edge.toId(((Edge) element).inVertex().id());
+      }
       for (Field field : fields(instance)) {
         String propertyName = propertyKey(field);
         Class propertyType = field.getType();

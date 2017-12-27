@@ -18,20 +18,18 @@
  */
 package org.apache.tinkerpop.gremlin.object.structure;
 
-import org.apache.tinkerpop.gremlin.object.model.Hidden;
-import org.apache.tinkerpop.gremlin.object.reflect.Parser;
-import org.apache.tinkerpop.gremlin.object.traversal.AnyTraversal;
-import org.apache.tinkerpop.gremlin.object.traversal.SubTraversal;
-import org.apache.tinkerpop.gremlin.structure.Direction;
-
 import java.util.Arrays;
 import java.util.List;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.apache.tinkerpop.gremlin.object.model.Hidden;
+import org.apache.tinkerpop.gremlin.object.reflect.Parser;
+import org.apache.tinkerpop.gremlin.object.traversal.AnyTraversal;
+import org.apache.tinkerpop.gremlin.object.traversal.SubTraversal;
+import org.apache.tinkerpop.gremlin.structure.Direction;
 
 /**
  * An {@link Edge} is an {@link Element} that is an object-oriented manifestation of an underlying
@@ -79,6 +77,15 @@ public abstract class Edge extends Element {
   private List<Connection> cachedConnections;
 
   protected abstract List<Connection> connections();
+
+
+  /**
+   * Return the underlying gremlin edge.
+   */
+  public org.apache.tinkerpop.gremlin.structure.Edge delegate() {
+    return (org.apache.tinkerpop.gremlin.structure.Edge) delegate;
+  }
+
 
   /**
    * Return the "from" vertex as the given type.

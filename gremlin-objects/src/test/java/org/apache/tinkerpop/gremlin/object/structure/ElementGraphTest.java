@@ -87,7 +87,9 @@ public class ElementGraphTest<O extends Element> extends GraphTest {
     when(traversal.hasId(anyString())).thenReturn(traversal);
     when(traversal.as(anyString())).thenReturn(traversal);
     when(traversal.out(anyString())).thenReturn(traversal);
+    when(traversal.outE(anyString())).thenReturn(traversal);
     when(traversal.inE(anyString())).thenReturn(traversal);
+    when(traversal.inV()).thenReturn(traversal);
     when(traversal.addE(anyString())).thenReturn(traversal);
     when(traversal.addV(anyString())).thenReturn(traversal);
     when(traversal.from(anyString())).thenReturn(traversal);

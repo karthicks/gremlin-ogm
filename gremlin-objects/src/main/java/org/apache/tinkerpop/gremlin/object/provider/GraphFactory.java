@@ -71,7 +71,7 @@ public class GraphFactory {
         }
         break;
       case NOTHING:
-        break;
+        return makeGraph();
       default:
         break;
     }
@@ -109,7 +109,7 @@ public class GraphFactory {
         }
         break;
       case NOTHING:
-        break;
+        return makeQuery();
       default:
         break;
     }
@@ -145,7 +145,7 @@ public class GraphFactory {
    */
   public enum ShouldCache {
     /**
-     * Cache the instances returned by {@link #graph()}, {@link #query()}, and {@link #system()}.
+     * Cache the instances returned by {@link #graph()}, and {@link #query()}.
      *
      * <p> This mode may be used in single-threaded applications, if you want to avoid the overhead
      * of creating the state of the {@link #graph()} and {@link #query()} instances. The caller must

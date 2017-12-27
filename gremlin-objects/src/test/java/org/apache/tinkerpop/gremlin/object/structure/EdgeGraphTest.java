@@ -143,11 +143,12 @@ public class EdgeGraphTest extends ElementGraphTest<Develops> {
         // try to find the edge, and fail if found
         inOrder.verify(traversal, times(1)).hasId(marko.id());
         inOrder.verify(traversal, times(1)).as("from");
-        inOrder.verify(traversal, times(1)).out(develops.label());
+        inOrder.verify(traversal, times(1)).outE(develops.label());
+        inOrder.verify(traversal, times(1)).as("edge");
+        inOrder.verify(traversal, times(1)).inV();
         inOrder.verify(traversal, times(1)).hasId(vadas.id());
         inOrder.verify(traversal, times(1)).as("to");
-        inOrder.verify(traversal, times(1)).inE(develops.label());
-        inOrder.verify(traversal, times(1)).as("edge");
+        inOrder.verify(traversal, times(1)).select("edge");
         inOrder.verify(traversal, times(1)).choose(__.value());
 
         // try to insert the edge
@@ -186,12 +187,12 @@ public class EdgeGraphTest extends ElementGraphTest<Develops> {
     inOrder.verify(g, times(1)).V();
     inOrder.verify(traversal, times(1)).hasId(marko.id());
     inOrder.verify(traversal, times(1)).as("from");
-    inOrder.verify(traversal, times(1)).out(develops.label());
+    inOrder.verify(traversal, times(1)).outE(develops.label());
+    inOrder.verify(traversal, times(1)).as("edge");
+    inOrder.verify(traversal, times(1)).inV();
     inOrder.verify(traversal, times(1)).hasId(vadas.id());
     inOrder.verify(traversal, times(1)).as("to");
-    inOrder.verify(traversal, times(1)).inE(develops.label());
-    inOrder.verify(traversal, times(1)).as("edge");
-    inOrder.verify(traversal, times(1)).select("edge");
+    inOrder.verify(traversal, times(2)).select("edge");
     inOrder.verify(traversal, times(1)).toList();
   }
 }

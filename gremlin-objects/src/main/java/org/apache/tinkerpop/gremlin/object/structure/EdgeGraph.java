@@ -18,6 +18,10 @@
  */
 package org.apache.tinkerpop.gremlin.object.structure;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.tinkerpop.gremlin.object.reflect.Parser;
 import org.apache.tinkerpop.gremlin.object.reflect.Properties;
 import org.apache.tinkerpop.gremlin.object.traversal.AnyTraversal;
@@ -27,12 +31,6 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.T;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * The {@link EdgeGraph} performs add and remove edge operations on the underlying {@link
@@ -56,7 +54,8 @@ public class EdgeGraph extends ElementGraph {
   }
 
   public org.apache.tinkerpop.gremlin.structure.Edge delegate(Edge edge) {
-    return edge.id() != null ? this.delegates.get(edge) : null;
+    return edge.delegate != null ? edge.delegate() :
+        edge.id() != null ? this.delegates.get(edge) : null;
   }
 
   /**
@@ -218,8 +217,11 @@ public class EdgeGraph extends ElementGraph {
   }
 
   <E extends Edge> GraphTraversal find(E edge, Object fromId, Object toId) {
-    return g.V().hasId(fromId).as("from").out(edge.label()).hasId(toId).as("to")
-        .inE(edge.label()).as("edge");
+    return g.V()
+        .hasId(fromId).as("from")
+        .outE(edge.label()).as("edge")
+        .inV().hasId(toId).as("to")
+        .select("edge");
   }
 
   @Override

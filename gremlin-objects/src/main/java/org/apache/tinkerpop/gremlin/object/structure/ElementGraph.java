@@ -185,8 +185,15 @@ public class ElementGraph {
       case 0:
         break;
       case 1:
-        // this is a single valued property.
-        updates.add(Update.of(key, values.get(0)));
+        if (cardinality == null || cardinality == Cardinality.single) {
+          // this is a single valued property.
+          updates.add(Update.of(key, values.get(0)));
+          break;
+        } else {
+          // this is either a multi- or meta-property
+          updates.add(Update.of(cardinality, key, values.remove(0),
+              values.toArray(new Object[] {})));
+        }
         break;
       default:
         // this is either a multi- or meta-property

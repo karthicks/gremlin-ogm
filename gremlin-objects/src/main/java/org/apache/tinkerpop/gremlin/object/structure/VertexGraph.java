@@ -18,21 +18,21 @@
  */
 package org.apache.tinkerpop.gremlin.object.structure;
 
+import static org.apache.tinkerpop.gremlin.object.reflect.Keys.hasPrimaryKeys;
+import static org.apache.tinkerpop.gremlin.object.reflect.Properties.simple;
+import static org.apache.tinkerpop.gremlin.object.reflect.Traversal.show;
+
+import java.time.Clock;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.tinkerpop.gremlin.object.reflect.Parser;
 import org.apache.tinkerpop.gremlin.object.reflect.Properties;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.T;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
-
-import static org.apache.tinkerpop.gremlin.object.reflect.Keys.hasPrimaryKeys;
-import static org.apache.tinkerpop.gremlin.object.reflect.Properties.simple;
 
 /**
  * The {@link VertexGraph} performs add and remove vertex operations on the underlying {@link
@@ -54,7 +54,8 @@ public class VertexGraph extends ElementGraph {
   }
 
   public <V extends Vertex> org.apache.tinkerpop.gremlin.structure.Vertex delegate(V vertex) {
-    return vertex.id() != null ? delegates.get(vertex.id()) : null;
+    return vertex.delegate != null ? vertex.delegate() :
+        vertex.id() != null ? delegates.get(vertex.id()) : null;
   }
 
   /**
@@ -163,8 +164,16 @@ public class VertexGraph extends ElementGraph {
 
   @Override
   protected org.apache.tinkerpop.gremlin.structure.Vertex complete(GraphTraversal traversal) {
-    log.info("Executing '{} vertex' traversal {} ", should().label(), traversal);
-    return (org.apache.tinkerpop.gremlin.structure.Vertex) super.complete(traversal);
+    long startTime = Clock.systemUTC().millis();
+    try {
+      return (org.apache.tinkerpop.gremlin.structure.Vertex) super.complete(traversal);
+    } finally {
+      if (log.isDebugEnabled()) {
+        long endTime = Clock.systemUTC().millis();
+        log.debug("Executing '{} vertex' traversal {} in {}ms", should().label(), show(traversal),
+            endTime - startTime);
+      }
+    }
   }
 
   public void reset() {

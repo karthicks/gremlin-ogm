@@ -18,11 +18,10 @@
  */
 package org.apache.tinkerpop.gremlin.object.structure;
 
+import java.util.function.Consumer;
 import org.apache.tinkerpop.gremlin.object.traversal.AnyTraversal;
 import org.apache.tinkerpop.gremlin.object.traversal.Query;
 import org.apache.tinkerpop.gremlin.object.traversal.SubTraversal;
-
-import java.util.function.Consumer;
 
 /**
  * In order to write objects to the property graph, you'll need an instance of the {@link Graph}.
@@ -44,7 +43,7 @@ import java.util.function.Consumer;
  *
  * @author Karthick Sankarachary (http://github.com/karthicks)
  */
-public interface Graph {
+public interface  Graph {
 
   /**
    * Add an given {@link Vertex} to the graph.
@@ -98,6 +97,13 @@ public interface Graph {
    */
   <E extends Edge,
       V extends Vertex> Graph addEdge(E edge, Vertex fromVertex, AnyTraversal toAnyTraversal);
+
+  /**
+   * Add an {@link Edge} from the given vertex to the vertices returned by the {@link
+   * SubTraversal}s.
+   */
+  <E extends Edge,
+      V extends Vertex> Graph addEdge(E edge, Vertex fromVertex, SubTraversal... toVertexQueries);
 
   /**
    * Add an {@link Edge} to the vertices returned by the given {@link AnyTraversal}.

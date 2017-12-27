@@ -18,6 +18,7 @@
  */
 package org.apache.tinkerpop.gremlin.object.traversal;
 
+import java.util.Optional;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 
@@ -90,6 +91,17 @@ public interface Query {
    * @return an object of the given type
    */
   <T> T one(Class<T> type);
+
+
+  /**
+   * Complete the query by retrieving the result as an optional object of the given element type.
+   *
+   * Typically, the @{link #type} represents an object element. However, it may also denote the type
+   * of a property value.
+   *
+   * @return an optional object of the given type
+   */
+  <T> Optional<T> optional(Class<T> type);
 
   /**
    * Complete the query by retrieving the result as a list of objects of the given element type.
@@ -200,7 +212,12 @@ public interface Query {
 
     public static IllegalArgumentException unexpectedMultipleResults(Query query) {
       return new IllegalArgumentException(
-          String.format("Must specify a traversal that returns a single element: %s", query));
+          String.format("Must specify a traversal that returns no more than one element: %s", query));
+    }
+
+    public static IllegalArgumentException unexpectedNoResults(Query query) {
+      return new IllegalArgumentException(
+          String.format("Must specify a traversal that returns at least one element: %s", query));
     }
 
     public static IllegalArgumentException noTraversalSpecified(Query query) {
